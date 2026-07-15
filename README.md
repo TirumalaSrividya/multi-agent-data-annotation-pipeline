@@ -6,9 +6,8 @@ A Multi-Agent AI pipeline that automatically annotates unlabelled text data usin
 
 The system consists of two pipelines:
 
-Annotation Pipeline – Selects novel samples, annotates them using an LLM, and validates low-confidence predictions.
-
-Training Pipeline – Trains multiple candidate models, evaluates them, and selects the best model based on evaluation metrics.
+1. Annotation Pipeline – Selects novel samples, annotates them using an LLM, and validates low-confidence predictions.
+2. Training Pipeline – Trains multiple candidate models, evaluates them, and selects the best model based on evaluation metrics.
 
 
 ## Architecture
