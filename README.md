@@ -10,39 +10,10 @@ The system consists of two pipelines:
 2. Training Pipeline – Trains multiple candidate models, evaluates them, and selects the best model based on evaluation metrics.
 
 
-## Architecture
+## High Level Architecture
 
-``` 
-                        +----------------------+
-                        |    Orchestrator      |
-                        +----------+-----------+
-                                   |
-          -------------------------------------------------
-          |                                               |
-          ▼                                               ▼
+<img width="800" height="1100" alt="image" src="https://github.com/user-attachments/assets/907e326a-82c1-4da4-9246-0437a3892c9e" />
 
-   Annotation Pipeline                         Training Pipeline
-
-   +--------------+                             +---------------+
-   | Sampler      |                             | Trainer Agent |
-   | Agent        |                             +-------+-------+
-   +------+-------+                                     |
-          |                                             |
-          ▼                                             ▼
-   +--------------+                          Train KNN / LSTM / RNN
-   | Annotator    |                                     |
-   | Agent        |                                     ▼
-   +------+-------+                           Evaluate Models
-          |                                             |
-          ▼                                             ▼
-   +--------------+                          Select Best Model
-   | Quality      |                                     |
-   | Assessor     |                                     ▼
-   +------+-------+                          Generate Training Report
-          |
-          ▼
- Quality-Assessed Labelled Dataset
-```
 
 
 ## Folder Structure
