@@ -103,7 +103,7 @@ multi_agent_annotation_pipeline/
 
 ## Setup
 
-## clone repository
+## Clone Repository
 ```
 git clone https://github.com/TirumalaSrividya/multi-agent-data-annotation-pipeline 
 cd multi_agent_annotation_pipeline
