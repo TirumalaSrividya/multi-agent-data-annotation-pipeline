@@ -1,0 +1,62 @@
+task:
+  name: "news_topic_classification"
+  
+  label_set: ["World", "Sports", "Business", "Sci/Tech"]
+  text_column: "text"
+  label_column: "label"          
+  id_column: "id"
+
+data:
+  dataset_path: "data/sample_news.csv"
+  unlabelled_sample_size: 400    
+  random_seed: 42
+
+llm:
+  llm:
+  provider: ollama
+  model: llama3.2
+  max_tokens_per_call: 400
+  temperature: 0.0
+  request_timeout_s: 60
+  max_retries: 5
+  backoff_base_s: 1.5
+
+
+annotation:
+  batch_size: 16
+  token_budget: 60000             
+  confidence_threshold: 0.8        
+  max_cycles: 6                   
+  novelty_top_k_neighbors: 5
+
+quality_assessor:
+  low_confidence_threshold: 0.8    
+  max_reviews_per_cycle: 200
+  agreement_boost: 0.15            
+  disagreement_penalty: 0.2
+
+trainer:
+  candidate_models: ["knn", "lstm", "rnn"]
+  train_split: 0.7
+  eval_split: 0.15
+  test_split: 0.15
+  target_accuracy: 0.85
+  max_epochs: 15
+  early_stopping_patience: 3
+  batch_size: 32
+  learning_rate: 0.001
+  embedding_dim: 64
+  hidden_dim: 64
+  vocab_size: 8000
+  max_seq_len: 40
+
+logging:
+  level: "INFO"
+  log_dir: "artifacts/logs"
+  log_file: "pipeline.log"
+
+artifacts:
+  output_dir: "artifacts"
+  labelled_pool_file: "labelled_pool.csv"
+  training_report_file: "training_report.json"
+  best_model_file: "best_model"
