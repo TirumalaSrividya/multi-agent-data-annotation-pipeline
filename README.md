@@ -74,19 +74,19 @@ multi_agent_annotation_pipeline/
 
 ## Setup
 
-## Clone Repository
+Clone Repository
 ```
 git clone https://github.com/TirumalaSrividya/multi-agent-data-annotation-pipeline 
 cd multi_agent_annotation_pipeline
 ```
 
-## Install Dependencies
+Install Dependencies
 ```
 pip install -r requirements.txt
 pip install pytest
 ```
 
-##  Start Ollama
+Start Ollama
 
 bash 
 ```
