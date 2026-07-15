@@ -12,7 +12,7 @@ The system consists of two pipelines:
 
 ## High Level Architecture
 
-<img width="600" height="700" alt="image" src="https://github.com/user-attachments/assets/907e326a-82c1-4da4-9246-0437a3892c9e" />
+<img width="800" height="800" alt="image" src="https://github.com/user-attachments/assets/907e326a-82c1-4da4-9246-0437a3892c9e" />
 
 
 
