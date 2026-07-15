@@ -76,8 +76,8 @@ multi_agent_annotation_pipeline/
 
 Clone Repository
 ```
-git clone https://github.com/TirumalaSrividya/multi-agent-data-annotation-pipeline 
-cd multi_agent_annotation_pipeline
+git clone https://github.com/TirumalaSrividya/multi-agent-data-annotation-pipeline.git
+cd multi-agent-data-annotation-pipeline
 ```
 
 Install Dependencies
