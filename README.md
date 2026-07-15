@@ -104,14 +104,16 @@ multi_agent_annotation_pipeline/
 ## Setup
 
 ## clone the repo
+```
 git clone <repository-url>
 cd Agentic_Annotation Pipeline
-
+```
 
 ## Install Dependencies
-
+```
 pip install -r requirements.txt
-pip install pytest 
+pip install pytest
+```
 
 ##  Start Ollama
 
