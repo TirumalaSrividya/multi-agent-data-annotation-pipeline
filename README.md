@@ -103,9 +103,12 @@ multi_agent_annotation_pipeline/
 
 ## Setup
 
-## clone the repo
+## clone repository
+
+git clone
 ```
-git clone <repository-url>
+https://github.com/TirumalaSrividya/multi-agent-data-annotation-pipeline 
+```
 cd Agentic_Annotation Pipeline
 ```
 
