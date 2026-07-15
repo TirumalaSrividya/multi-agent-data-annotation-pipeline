@@ -1,4 +1,4 @@
-# Multi-Agent Autonomous Data Annotation & Active Learning Pipeline
+# Multi-Agent Data Annotation & Active Learning Pipeline
 
 ## Overview
 
