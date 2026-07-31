@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """
 Entry point for the annotation and training pipeline.
 """
@@ -26,7 +26,7 @@ def parse_overrides(raw_overrides: list[str]) -> dict:
         if "=" not in item:
             raise ValueError(f"Invalid --set override '{item}', expected key=value")
         key, value = item.split("=", 1)
-        # best-effort type coercion
+        # Convert command-line values to the appropriate type.
         if value.lower() in ("true", "false"):
             value = value.lower() == "true"
         else:
@@ -97,7 +97,8 @@ def main() -> None:
     if settings.task.label_column and not labelled_df.empty and labelled_df["true_label"].notna().any():
         agreement = (labelled_df["predicted_label"] == labelled_df["true_label"]).mean()
         logger.info("Agent-vs-ground-truth agreement on labelled pool: %.3f (demo diagnostic only)", agreement)
-
+        
+    # Stop training if fewer than two labels are available.
     if len(set(labelled_df["predicted_label"])) < 2:
         logger.error("Fewer than 2 distinct labels were accepted; cannot proceed to training. Exiting.")
         return
