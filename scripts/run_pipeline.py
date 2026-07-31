@@ -1,17 +1,6 @@
 #!/usr/bin/env python3
 """
-End-to-end CLI runner.
-
-Usage:
-    python scripts/run_pipeline.py
-    python scripts/run_pipeline.py --provider mock            # offline demo, no API key needed
-    python scripts/run_pipeline.py --config config/config.yaml --set annotation.token_budget=20000
-    python scripts/run_pipeline.py --set trainer.target_accuracy=0.9
-
-Produces (in artifacts/):
-    labelled_pool.csv       - final accepted annotations (id, text, label, confidence, source)
-    training_report.json    - per-class metrics for every candidate + the winning model's test metrics
-    logs/pipeline.log       - full structured run log
+Entry point for the annotation and training pipeline.
 """
 from __future__ import annotations
 
