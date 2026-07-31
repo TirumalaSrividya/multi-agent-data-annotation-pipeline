@@ -1,12 +1,5 @@
 """
-Embedding backend used purely for *novelty scoring* in the Sampler agent
-(NOT for the classifier itself). TF-IDF is used by default because it is
-fast, dependency-light, deterministic and needs no network/model download,
-which keeps the pipeline runnable in constrained/offline environments.
-
-The interface is intentionally narrow (`fit`, `transform`) so a
-sentence-transformer or any other embedding model can be swapped in later
-without changing the Sampler agent.
+Embedding utilities for sample selection.
 """
 from __future__ import annotations
 
@@ -33,16 +26,13 @@ class TfidfEmbeddingBackend:
 
     def transform(self, texts: List[str]) -> np.ndarray:
         if not self._fitted:
-            # fit_transform on the fly if the caller never called fit()
+            # Fit the vectorizer if it has not been initialized.
             return self.vectorizer.fit_transform(texts).toarray()
         return self.vectorizer.transform(texts).toarray()
 
 
 def novelty_scores(candidate_vecs: np.ndarray, reference_vecs: np.ndarray) -> np.ndarray:
-    """Returns, for each candidate row, `1 - max_cosine_similarity` against
-    the reference set (the already-labelled pool). Higher score = more
-    novel / less redundant with what has already been annotated. If the
-    reference set is empty, every candidate is maximally novel."""
+    # Calculate novelty scores for candidate samples.
     if reference_vecs.shape[0] == 0:
         return np.ones(candidate_vecs.shape[0])
     sims = cosine_similarity(candidate_vecs, reference_vecs)
