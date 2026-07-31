@@ -1,4 +1,3 @@
-
 """
 Entry point for the annotation and training pipeline.
 """
