@@ -35,7 +35,7 @@ class SamplerAgent(BaseAgent):
             self.logger.info("Batch size >= remaining pool; selecting all %d remaining samples.", len(unlabelled))
             return list(unlabelled)
 
-        candidate_texts = [s.text for s in unlabelled]
+        candidate_texts = [sample.text for sample in unlabelled]
         # Fit the vectorizer on both labelled and unlabelled samples.
         labelled_texts = [samples_by_id[sid].text for sid in labelled_annotations.keys() if sid in samples_by_id]
         self.embedder.fit(candidate_texts + labelled_texts)
@@ -49,7 +49,7 @@ class SamplerAgent(BaseAgent):
             scores = self._diversity_scores(candidate_vectors)
 
         ranked_indices = np.argsort(-scores)[:batch_size]
-        selected = [unlabelled[i] for i in ranked_indices]
+        selected = [unlabelled[index] for index in ranked_indices]
         self.logger.info(
             "Selected %d/%d samples by novelty (mean score=%.3f)",
             len(selected), len(unlabelled), float(scores[ranked_indices].mean()),
