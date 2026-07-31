@@ -1,22 +1,10 @@
 """
 Annotator Agent
 ---------------
-Labels a batch of unlabelled text samples using an LLM. Uses a few-shot,
-structured-output prompting technique: the system prompt fixes the label
-set and forces strict JSON output containing `label`, `confidence`
-(0-1 float) and a short `reasoning` string, which is far more reliable to
-parse than free text. Confidence is elicited explicitly rather than
-derived from token log-probs, since not all providers expose them.
-
-Respects a hard token budget (src/utils/token_budget.py): once the budget
-is exhausted the agent stops issuing new LLM calls and returns whatever it
-has produced so far, satisfying task requirement 1.c.
-
-Errors from a single sample (malformed JSON, transient API failure that
-exhausted retries) are caught and logged; the sample is marked as
-low-confidence (confidence=0.0) so it flows into the Quality Assessor
-rather than silently disappearing or crashing the whole batch.
+Uses an LLM to label text samples, enforces JSON output, 
+tracks token usage, and sends failed annotations for review.
 """
+
 from __future__ import annotations
 
 import json
@@ -105,13 +93,13 @@ class AnnotatorAgent(BaseAgent):
             parsed = LLMClient.parse_json_response(response.text)
 
             label = str(parsed["label"]).strip()
-            confidence = float(parsed.get("confidence", 0.5))
-            confidence = min(max(confidence, 0.0), 1.0)
+            confidence = float(parsed.get("confidence", 0.5)) 
+            confidence = min(max(confidence, 0.0), 1.0)   # Clamp confidence to the valid range.
+            
             if label not in self.label_set:
-                # LLM hallucinated a label outside the schema: keep the raw
-                # label for visibility but cap confidence low so QA reviews it.
+            
                 self.logger.warning("Sample %s: label '%s' not in label set %s", sample.id, label, self.label_set)
-                confidence = min(confidence, 0.4)
+                confidence = min(confidence, 0.4)  # Reduce confidence when the model returns an invalid label.
 
             annotation = Annotation(
                 sample_id=sample.id,
@@ -136,7 +124,7 @@ class AnnotatorAgent(BaseAgent):
                 tokens_used=0,
                 status=SampleStatus.UNDER_REVIEW,
             )
-        except Exception as exc:  # network/API errors surviving retries
+        except Exception as exc: 
             self._log_error(f"LLM call failed for sample {sample.id} after retries", exc)
             return Annotation(
                 sample_id=sample.id,
