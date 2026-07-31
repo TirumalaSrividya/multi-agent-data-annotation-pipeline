@@ -1,18 +1,6 @@
-"""
-Model zoo for the Trainer agent. The Trainer is deliberately model-agnostic:
-it just needs each candidate to expose `fit`, `predict`. Two families are
-provided:
 
-  * KNNTextClassifier   - TF-IDF + K-Nearest-Neighbours (sklearn). Strong,
-                           fast baseline for small/medium labelled pools.
-  * LSTMClassifier / RNNClassifier - PyTorch sequence models over a learned
-                           token embedding, for when more labelled data is
-                           available and sequential structure helps.
+# Models used by the trainer agent
 
-A tiny whitespace tokenizer + vocabulary builder keeps the deep models
-dependency-free (no pretrained embeddings needed) and fully task-agnostic:
-point it at any text classification dataset and it builds its own vocab.
-"""
 from __future__ import annotations
 
 import re
@@ -57,9 +45,6 @@ class Vocabulary:
         return len(self.token2idx)
 
 
-# --------------------------------------------------------------------------
-# Classical baseline: KNN over TF-IDF features
-# --------------------------------------------------------------------------
 class KNNTextClassifier:
     name = "knn"
 
@@ -76,9 +61,6 @@ class KNNTextClassifier:
         return list(self.clf.predict(X))
 
 
-# --------------------------------------------------------------------------
-# PyTorch sequence models
-# --------------------------------------------------------------------------
 class _SequenceClassifierBase(nn.Module):
     def __init__(self, vocab_size: int, embedding_dim: int, hidden_dim: int, num_classes: int, rnn_cls):
         super().__init__()
@@ -109,10 +91,8 @@ class RNNTorchModule(_SequenceClassifierBase):
 
 
 class TorchSequenceClassifier:
-    """Wraps an LSTM/RNN torch module behind the same fit/predict interface
-    as KNNTextClassifier, so the Trainer agent can treat every candidate
-    model uniformly."""
-
+   # Provides a common interface for sequence models
+ 
     def __init__(
         self,
         kind: str,
