@@ -1,7 +1,7 @@
-"""Abstract base class shared by all agents: gives every agent a named
-logger and a consistent `run()` entry point convention, without imposing
-any particular interface on inputs/outputs (each agent's contract is
-defined by the schemas it consumes/returns, see src/schemas.py)."""
+"""
+Base class for all agents.
+Provides shared logging functionality
+"""
 from __future__ import annotations
 
 import logging
