@@ -1,5 +1,6 @@
-"""Per-class and macro classification metrics, used identically for eval
-and test splits so numbers are directly comparable."""
+"""
+Model evaluation utilities.
+"""
 from __future__ import annotations
 
 from typing import Dict, List
