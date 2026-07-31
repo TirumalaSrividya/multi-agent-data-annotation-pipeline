@@ -1,24 +1,10 @@
 """
 Quality Assessor Agent
 -----------------------
-Reviews every annotation whose confidence fell below the configured
-threshold. Re-prompts the LLM independently (a different system prompt that
-asks it to act as a strict senior reviewer double-checking a junior
-annotator's work, i.e. a self-consistency / debate-style second pass)
-and reconciles the two opinions:
-
-  * If the reviewer agrees with the original label, confidence is boosted
-    (two independent passes agreeing is stronger evidence).
-  * If the reviewer disagrees, the reviewer's label is trusted (it saw the
-    original label + reasoning and made a deliberate correction) but with
-    a conservative confidence penalty, and the sample is flagged so a
-    human/downstream cycle can inspect it if it still doesn't clear the
-    bar after review.
-
-Samples that still fail to reach the confidence threshold after review are
-returned separately as `still_low_confidence`, which the orchestrator
-re-queues for another Sampler -> Annotator -> QA cycle (task 1.d).
+Reviews low-confidence annotations and either accepts,
+updates, or flags them for further review.
 """
+
 from __future__ import annotations
 
 from typing import Dict, List, Tuple
@@ -88,7 +74,6 @@ class QualityAssessorAgent(BaseAgent):
         samples_by_id: Dict[str, Sample],
         budget_tracker: TokenBudgetTracker,
     ) -> Tuple[List[Annotation], List[Annotation]]:
-        """Returns (accepted, still_low_confidence)."""
         accepted: List[Annotation] = []
         still_low: List[Annotation] = []
 
