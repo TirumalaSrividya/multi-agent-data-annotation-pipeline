@@ -1,15 +1,7 @@
 """
-Training routines used by the Trainer agent.
+Training routines used by the trainer agent.
 
-`train_and_eval_candidate` dispatches on model type:
-  * KNN (and any non-epoch-based sklearn model) is fit once and evaluated.
-  * LSTM/RNN are trained epoch-by-epoch with early stopping on two
-    conditions (whichever fires first):
-      1. Eval accuracy reaches `target_accuracy` (task requirement 2.d /
-         "Trainer ... Early stopping of the training if the model accuracy
-         is reached to target accuracy").
-      2. Eval macro-F1 fails to improve for `patience` consecutive epochs
-         (classic early-stopping to avoid overfitting/wasted compute).
+Provides model training, evaluation, and early-stopping logic.
 """
 from __future__ import annotations
 
