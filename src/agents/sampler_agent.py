@@ -25,8 +25,8 @@ class SamplerAgent(BaseAgent):
     def select_batch(
         self,
         unlabelled: List[Sample],
-        labelled: dict[str, Annotation],
-        all_samples_by_id: dict[str, Sample],
+        labelled_annotations: dict[str, Annotation],
+        samples_by_id: dict[str, Sample],
         batch_size: int,
     ) -> List[Sample]:
         if not unlabelled:
@@ -37,7 +37,7 @@ class SamplerAgent(BaseAgent):
 
         candidate_texts = [s.text for s in unlabelled]
         # Fit the vectorizer on both labelled and unlabelled samples.
-        labelled_texts = [all_samples_by_id[sid].text for sid in labelled.keys() if sid in all_samples_by_id]
+        labelled_texts = [samples_by_id[sid].text for sid in labelled_annotations.keys() if sid in samples_by_id]
         self.embedder.fit(candidate_texts + labelled_texts)
 
         candidate_vectors = self.embedder.transform(candidate_texts)
