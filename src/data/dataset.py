@@ -1,8 +1,6 @@
 """
-Task-agnostic dataset loading. Any CSV with a text column (and optionally
-an id column / ground-truth label column for demo purposes) can be plugged
-in via config/config.yaml -> task.text_column / task.id_column /
-task.label_column, without touching agent code.
+Load samples from a CSV dataset.
+
 """
 from __future__ import annotations
 
