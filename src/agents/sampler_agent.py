@@ -40,27 +40,27 @@ class SamplerAgent(BaseAgent):
         labelled_texts = [all_samples_by_id[sid].text for sid in labelled.keys() if sid in all_samples_by_id]
         self.embedder.fit(candidate_texts + labelled_texts)
 
-        candidate_vecs = self.embedder.transform(candidate_texts)
+        candidate_vectors = self.embedder.transform(candidate_texts)
 
         if labelled_texts:
-            reference_vecs = self.embedder.transform(labelled_texts)
-            scores = novelty_scores(candidate_vecs, reference_vecs)
+            reference_vectors = self.embedder.transform(labelled_texts)
+            scores = novelty_scores(candidate_vectors, reference_vectors)
         else:
-            scores = self._diversity_scores(candidate_vecs)
+            scores = self._diversity_scores(candidate_vectors)
 
-        ranked_idx = np.argsort(-scores)[:batch_size]
-        selected = [unlabelled[i] for i in ranked_idx]
+        ranked_indices = np.argsort(-scores)[:batch_size]
+        selected = [unlabelled[i] for i in ranked_indices]
         self.logger.info(
             "Selected %d/%d samples by novelty (mean score=%.3f)",
-            len(selected), len(unlabelled), float(scores[ranked_idx].mean()),
+            len(selected), len(unlabelled), float(scores[ranked_indices].mean()),
         )
         return selected
 
     @staticmethod
-    def _diversity_scores(vecs: np.ndarray) -> np.ndarray:
+    def _diversity_scores(vectors: np.ndarray) -> np.ndarray:
         # Calculate diversity scores for the initial batch.
-        centroid = vecs.mean(axis=0, keepdims=True)
-        dists = np.linalg.norm(vecs - centroid, axis=1)
-        if dists.max() > 0:
-            dists = dists / dists.max()
-        return dists
+        centroid = vectors.mean(axis=0, keepdims=True)
+        distances = np.linalg.norm(vectors - centroid, axis=1)
+        if distances.max() > 0:
+            distances = distances / distances.max()
+        return distances
