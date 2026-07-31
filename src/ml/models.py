@@ -1,4 +1,3 @@
-
 # Models used by the trainer agent
 
 from __future__ import annotations
