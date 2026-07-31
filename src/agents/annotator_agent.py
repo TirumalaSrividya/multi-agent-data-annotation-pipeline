@@ -47,7 +47,7 @@ Text: "{text}"
 Output:"""
 
 
-class AnnotatorAgent(BaseAgent):
+class AnnotatorAgent(BaseAgent):     
     name = "annotator"
 
     def __init__(self, llm_client: LLMClient, label_set: List[str], task_name: str, max_tokens_per_call: int = 400):
@@ -97,7 +97,6 @@ class AnnotatorAgent(BaseAgent):
             confidence = min(max(confidence, 0.0), 1.0)   # Clamp confidence to the valid range.
             
             if label not in self.label_set:
-            
                 self.logger.warning("Sample %s: label '%s' not in label set %s", sample.id, label, self.label_set)
                 confidence = min(confidence, 0.4)  # Reduce confidence when the model returns an invalid label.
 
